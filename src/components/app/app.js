@@ -1,34 +1,75 @@
-import React from 'react';
+import React, {Component} from 'react';
 
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
+import ItemAddForm from '../item-add-form';
 
 import './app.css';
 
-const App = () => {
+class App extends Component {
 
-    const todoData = [
-        {label: 'Drink coffee', important: false, id: 1},
-        {label: 'Make awesome app', important: true, id: 2},
-        {label: 'Have a lunch', important: false, id: 3},
-    ];
+    state = {
+        todoData: [
+            {label: 'Drink coffee', important: false, id: 1},
+            {label: 'Make awesome app', important: true, id: 2},
+            {label: 'Have a lunch', important: false, id: 3},
+        ]
+    };
 
-    return (
-        <div className="todo-app">
-            <AppHeader toDo={1} done={3} />
-            <div className="top-panel d-flex">
-                <SearchPanel />
-                <ItemStatusFilter />
+    deleteItem = (id) => {
+
+        this.setState(({todoData}) => {
+            const idx = todoData.findIndex((el) => el.id === id);
+            const newArray = [
+                ...todoData.slice(0, idx),
+                ...todoData.slice(idx + 1)
+            ];
+
+            return {
+                todoData: newArray
+            }
+        });
+    };
+
+    addItem = () => {
+
+        this.setState(({todoData}) => {
+            const lastItemId = todoData[todoData.length - 1].id;
+            const result = [
+                ...todoData,
+                {
+                    label: 'Smack my bitch up',
+                    important: false,
+                    id: lastItemId +1
+                }
+            ];
+
+            return {
+                todoData: result
+            };
+        });
+    };
+
+    render(){
+
+        return(
+            <div className="todo-app">
+                <AppHeader toDo={1} done={3} />
+                <div className="top-panel d-flex">
+                    <SearchPanel />
+                    <ItemStatusFilter />
+                </div>
+
+                <TodoList
+                    todos={this.state.todoData}
+                    onDeleted={(id) => this.deleteItem(id)}
+                />
+                <ItemAddForm addItem={this.addItem}/>
             </div>
-
-            <TodoList
-                todos={todoData}
-                onDeleted={(id) => console.log('Del', id)}
-            />
-        </div>
-    )
-};
+        )
+    }
+}
 
 export default App;
