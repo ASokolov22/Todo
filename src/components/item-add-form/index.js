@@ -1,3 +1,3 @@
-/**
- * Created by asokolov on 08.10.20.
- */
+import ItemAddForm from './item-add-form';
+
+export default ItemAddForm;

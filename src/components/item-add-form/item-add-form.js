@@ -1,3 +1,16 @@
-/**
- * Created by asokolov on 08.10.20.
- */
+import React from 'react';
+
+import './item-add-form.css';
+
+const ItemAddForm = ({addItem}) => {
+
+    return (
+        <div className="item-add-form">
+            <button className="btn btn-outline-secondary"
+                onClick={addItem}
+            >Add</button>
+        </div>
+    )
+};
+
+export default ItemAddForm;
